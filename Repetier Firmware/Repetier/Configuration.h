@@ -7,12 +7,17 @@ Rostock MAX v3   = 5
 Hacker H2        = 6
 */
 // ### Define your Printer Model here! ###
-#define PRINTER 5
+#define PRINTER 2
 
 // SeeMeCNC Bowden w/PEEK barrel = 1
 // HE240 on ERIS w/accel probe   = 2
 // HE280 w/accel probe           = 3
-#define HOTEND 3
+// E3Dv6 w/o accel probe         = 4
+#define HOTEND 4
+
+//ball in cup arms = 1
+//magnetic arms    = 2
+#define ARMS 1
 
 // ### Define your motherboard here! ###
 // 301 = RAMBo    302 = MINI RAMBo
@@ -53,6 +58,7 @@ Hacker H2        = 6
 #define MICROSTEP_MODES {16,16,16,16,16} // 1,2,4,8,16
 #if MOTHERBOARD == 301  // RAMBo
 #define STEPPER_CURRENT_CONTROL CURRENT_CONTROL_DIGIPOT
+#define MOTOR_CURRENT {140,140,140,130,0}
 #elif MOTHERBOARD == 302  // Mini RAMBo
 #define STEPPER_CURRENT_CONTROL CURRENT_CONTROL_PWM
 #define MOTOR_CURRENT_PWM_RANGE 2000
@@ -117,6 +123,21 @@ Hacker H2        = 6
 #define EXT1_PID_I 9.7
 #define EXT1_PID_D 60.0
 #define EXT1_PID_MAX 255
+#elif HOTEND == 4
+#define MAXTEMP 300
+#define UI_SET_MAX_EXTRUDER_TEMP 280
+#define EXT0_PID_INTEGRAL_DRIVE_MAX 180
+#define EXT0_PID_INTEGRAL_DRIVE_MIN 80
+#define EXT0_PID_PGAIN_OR_DEAD_TIME 25.87
+#define EXT0_PID_I 3.94
+#define EXT0_PID_D 42.44
+#define EXT0_PID_MAX 255
+#define EXT1_PID_INTEGRAL_DRIVE_MAX 180
+#define EXT1_PID_INTEGRAL_DRIVE_MIN 80
+#define EXT1_PID_PGAIN_OR_DEAD_TIME 14.50
+#define EXT1_PID_I 0.73
+#define EXT1_PID_D 53.41
+#define EXT1_PID_MAX 255
 #endif
 // using PWM not PDM
 #define PDM_FOR_EXTRUDER 0
@@ -165,7 +186,15 @@ Hacker H2        = 6
 #define EXT1_X_OFFSET 0
 #define EXT1_Y_OFFSET 0
 #define EXT1_STEPS_PER_MM 92.4
+#if HOTEND == 1
 #define EXT1_TEMPSENSOR_TYPE 97 //97
+#elif HOTEND == 2
+#define EXT1_TEMPSENSOR_TYPE 97 //97
+#elif HOTEND == 3
+#define EXT1_TEMPSENSOR_TYPE 97 //97
+#elif HOTEND == 4
+#define EXT1_TEMPSENSOR_TYPE 8 //8
+#endif
 #define EXT1_TEMPSENSOR_PIN TEMP_1_PIN
 #define EXT1_HEATER_PIN HEATER_1_PIN
 #define EXT1_STEP_PIN ORIG_E1_STEP_PIN
@@ -303,12 +332,21 @@ Hacker H2        = 6
 #define INVERT_X_DIR 1
 #define INVERT_Y_DIR 0
 #define INVERT_Z_DIR 1
-#define DELTA_DIAGONAL_ROD 291.06  // ball cup arms
+#if ARMS == 1
+#define DELTA_DIAGONAL_ROD 291.06 //stock arms
+#elif ARMS == 2
+#define DELTA_DIAGONAL_ROD 291.06 //mag arms
+#endif
+// ball cup arms || 290.8 is for the new ball cup arms v.91?
 #define DELTA_MAX_RADIUS 145.0
 #define PRINTER_RADIUS 200.0
 #define Z_MAX_LENGTH 350
-#define END_EFFECTOR_HORIZONTAL_OFFSET 30.22
-#define CARRIAGE_HORIZONTAL_OFFSET 26.5  // molded cheapskates
+#if ARMS == 1
+#define END_EFFECTOR_HORIZONTAL_OFFSET 30.22 //stock arms
+#elif ARMS == 2
+#define END_EFFECTOR_HORIZONTAL_OFFSET 36.5 //mag arms
+#endif
+#define CARRIAGE_HORIZONTAL_OFFSET 26.5  // molded cheapskates 27.1 from v.91?
 #define DELTASEGMENTS_PER_PRINTLINE 22
 #define STEPPER_INACTIVE_TIME 600L
 #define MAX_INACTIVE_TIME 900L
@@ -770,7 +808,7 @@ WARNING: Servos can draw a considerable amount of current. Make sure your system
 // ##############  SD Card Settings  #########################
 
 #define SD_EXTENDED_DIR 1 /** Show extended directory including file length. Don't use this with Pronterface! */
-#define SD_RUN_ON_STOP ""
+#define SD_RUN_ON_STOP "M104 S0 M140 S0 G28 M4" /** homes tower so print head doesn't stay on print **/
 #define SD_STOP_HEATER_AND_MOTORS_ON_STOP 1
 #define ARC_SUPPORT 0
 #define FEATURE_MEMORY_POSITION 1
@@ -804,9 +842,9 @@ Values must be in range 1..255
 #define BEEPER_SHORT_SEQUENCE 1,1
 #define BEEPER_LONG_SEQUENCE 32,4
 #define UI_SET_PRESET_HEATED_BED_TEMP_PLA 60
-#define UI_SET_PRESET_EXTRUDER_TEMP_PLA   180
+#define UI_SET_PRESET_EXTRUDER_TEMP_PLA   210
 #define UI_SET_PRESET_HEATED_BED_TEMP_ABS 80
-#define UI_SET_PRESET_EXTRUDER_TEMP_ABS   200
+#define UI_SET_PRESET_EXTRUDER_TEMP_ABS   225
 #define UI_SET_MIN_HEATED_BED_TEMP  30
 #define UI_SET_MAX_HEATED_BED_TEMP 120
 #define UI_SET_MIN_EXTRUDER_TEMP   150
