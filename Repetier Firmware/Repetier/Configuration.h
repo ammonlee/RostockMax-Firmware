@@ -15,6 +15,8 @@ Hacker H2        = 6
 // E3Dv6 w/o accel probe         = 4
 #define HOTEND 4
 
+#define USEPROBE = FALSE
+
 //ball in cup arms = 1
 //magnetic arms    = 2
 #define ARMS 1
@@ -124,8 +126,9 @@ Hacker H2        = 6
 #define EXT1_PID_D 60.0
 #define EXT1_PID_MAX 255
 #elif HOTEND == 4
-#define MAXTEMP 300
+#define MAXTEMP 285
 #define UI_SET_MAX_EXTRUDER_TEMP 280
+#define MAX_DEFECT_TEMPERATURE 290
 #define EXT0_PID_INTEGRAL_DRIVE_MAX 180
 #define EXT0_PID_INTEGRAL_DRIVE_MIN 80
 #define EXT0_PID_PGAIN_OR_DEAD_TIME 25.87
@@ -364,7 +367,7 @@ Hacker H2        = 6
 #define MAX_TRAVEL_ACCELERATION_UNITS_PER_SQ_SECOND_Z 3000
 #define MAX_JERK 32
 #define MAX_ZJERK 32
-#if HOTEND == 3
+#if HOTEND == 3 || HOTEND == 4 && USEPROBE = TRUE
 #define FEATURE_Z_PROBE 1
 #else
 #define FEATURE_Z_PROBE 0
