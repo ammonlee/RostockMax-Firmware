@@ -13,12 +13,14 @@ Hacker H2        = 6
 // HE240 on ERIS w/accel probe   = 2
 // HE280 w/accel probe           = 3
 // E3Dv6 w/o accel probe         = 4
+// E3Dv6 w/ accel probe          = 5
 #define HOTEND 4
 
 #define USEPROBE = FALSE
 
-//ball in cup arms = 1
-//magnetic arms    = 2
+//ball in cup arms                 = 1
+//magnetic arms                    = 2
+//carbon fiber ball in cup arms    = 3
 #define ARMS 1
 
 // ### Define your motherboard here! ###
@@ -126,6 +128,22 @@ Hacker H2        = 6
 #define EXT1_PID_D 60.0
 #define EXT1_PID_MAX 255
 #elif HOTEND == 4
+#define MAXTEMP 285
+#define UI_SET_MAX_EXTRUDER_TEMP 280
+#define MAX_DEFECT_TEMPERATURE 290
+#define EXT0_PID_INTEGRAL_DRIVE_MAX 180
+#define EXT0_PID_INTEGRAL_DRIVE_MIN 80
+#define EXT0_PID_PGAIN_OR_DEAD_TIME 25.87
+#define EXT0_PID_I 3.94
+#define EXT0_PID_D 42.44
+#define EXT0_PID_MAX 255
+#define EXT1_PID_INTEGRAL_DRIVE_MAX 180
+#define EXT1_PID_INTEGRAL_DRIVE_MIN 80
+#define EXT1_PID_PGAIN_OR_DEAD_TIME 14.50
+#define EXT1_PID_I 0.73
+#define EXT1_PID_D 53.41
+#define EXT1_PID_MAX 255
+#elif HOTEND == 5
 #define MAXTEMP 285
 #define UI_SET_MAX_EXTRUDER_TEMP 280
 #define MAX_DEFECT_TEMPERATURE 290
@@ -339,6 +357,8 @@ Hacker H2        = 6
 #define DELTA_DIAGONAL_ROD 291.06 //stock arms
 #elif ARMS == 2
 #define DELTA_DIAGONAL_ROD 291.06 //mag arms
+#elif ARMS == 3
+#define DELTA_DIAGONAL_ROD 340.5 //carbon fiber arms
 #endif
 // ball cup arms || 290.8 is for the new ball cup arms v.91?
 #define DELTA_MAX_RADIUS 145.0
@@ -348,6 +368,8 @@ Hacker H2        = 6
 #define END_EFFECTOR_HORIZONTAL_OFFSET 30.22 //stock arms
 #elif ARMS == 2
 #define END_EFFECTOR_HORIZONTAL_OFFSET 36.5 //mag arms
+#if ARMS == 3
+#define END_EFFECTOR_HORIZONTAL_OFFSET 30.22 //carbon fiber arms
 #endif
 #define CARRIAGE_HORIZONTAL_OFFSET 26.5  // molded cheapskates 27.1 from v.91?
 #define DELTASEGMENTS_PER_PRINTLINE 22
@@ -367,7 +389,7 @@ Hacker H2        = 6
 #define MAX_TRAVEL_ACCELERATION_UNITS_PER_SQ_SECOND_Z 3000
 #define MAX_JERK 32
 #define MAX_ZJERK 32
-#if HOTEND == 3 || HOTEND == 4 && USEPROBE = TRUE
+#if HOTEND == 3 || HOTEND == 5
 #define FEATURE_Z_PROBE 1
 #else
 #define FEATURE_Z_PROBE 0
