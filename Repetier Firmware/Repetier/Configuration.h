@@ -16,8 +16,6 @@ Hacker H2        = 6
 // E3Dv6 w/ accel probe          = 5
 #define HOTEND 4
 
-#define USEPROBE = FALSE
-
 //ball in cup arms                 = 1
 //magnetic arms                    = 2
 //carbon fiber ball in cup arms    = 3
